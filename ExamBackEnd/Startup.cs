@@ -16,7 +16,7 @@ namespace ExamBackEnd
 {
     public class Startup
     {
-        public Startup(ILogger<Startup> logger, IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment, ILogger<Startup> logger)
         {
             Environment = environment;
 
@@ -36,6 +36,7 @@ namespace ExamBackEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

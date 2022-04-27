@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,16 +12,21 @@ namespace ExamBackEnd
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        public static void Main(string[] args) =>
+            CreateWebHostBuilder(args).Build().Run();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .ConfigureLogging((hostingContext, logging) =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    var isDevelopment = environment == Environments.Development;
+                    if (isDevelopment)
+                    {
+                        logging.AddConsole();
+                        logging.AddFilter(string.Empty, LogLevel.Information);
+                    }
                 });
     }
 }
