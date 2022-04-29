@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam.WebApi", "ExamBackEnd\Exam.WebApi.csproj", "{64EA590A-E23E-4883-8EE3-D0DE9FFA01E7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{83E56747-0C6E-485B-881B-D9B501FBE2CC} = {83E56747-0C6E-485B-881B-D9B501FBE2CC}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam.Domain", "Exam.Domain\Exam.Domain.csproj", "{83E56747-0C6E-485B-881B-D9B501FBE2CC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43909F9B-13F5-4FA9-A5BE-25813D5B2E17} = {43909F9B-13F5-4FA9-A5BE-25813D5B2E17}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam.Data", "Exam.Data\Exam.Data.csproj", "{43909F9B-13F5-4FA9-A5BE-25813D5B2E17}"
 EndProject
