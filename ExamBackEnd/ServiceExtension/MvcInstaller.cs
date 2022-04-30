@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Exam.Domain.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Exam.WebApi.ServiceExtension
 {
@@ -10,6 +13,12 @@ namespace Exam.WebApi.ServiceExtension
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(nameof(jwtSettings), jwtSettings);
+            services.AddSingleton(jwtSettings);
+
+            services.AddMvc();
+
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 // Processing all forward headers (the default is None)
@@ -20,9 +29,29 @@ namespace Exam.WebApi.ServiceExtension
                 options.KnownProxies.Clear();
             });
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+            };
 
-            services.AddMvc();
+            services.AddSingleton(tokenValidationParameters);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = tokenValidationParameters;
+                });
         }
     }
 }

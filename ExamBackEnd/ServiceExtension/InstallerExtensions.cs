@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using ExamBackEnd;
+﻿using ExamBackEnd;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 
 
 namespace Exam.WebApi.ServiceExtension

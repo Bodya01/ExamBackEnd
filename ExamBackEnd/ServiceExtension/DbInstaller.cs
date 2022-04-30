@@ -1,6 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Exam.Data.Context;
+using Exam.Data.Entities;
+using Exam.Data.Infrastructure;
 using Exam.Domain.Extensions;
+using Exam.Domain.Services.Implementation;
+using Exam.Domain.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Exam.WebApi.ServiceExtension
 {
@@ -10,8 +16,17 @@ namespace Exam.WebApi.ServiceExtension
         {
             services.AddDbContext(configuration);
 
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ExamContext>()
+                .AddDefaultTokenProviders();
+
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+
+            services.AddScoped<UserManager<User>>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
         }
     }
 }

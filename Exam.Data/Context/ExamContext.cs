@@ -1,10 +1,14 @@
 ﻿using Exam.Data.Entities;
+using Exam.Data.EntityConfiguration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exam.Data.Context
 {
-    public class ExamContext : DbContext
+    public class ExamContext : IdentityDbContext<User>
     {
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         public ExamContext(DbContextOptions<ExamContext> options)
             : base(options) { }
 
@@ -15,7 +19,8 @@ namespace Exam.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
         }
     }
 }
