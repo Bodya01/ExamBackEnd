@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 ExamBackEnd/appsettings.json
+ExamBackEnd/appsettings.Development.json
