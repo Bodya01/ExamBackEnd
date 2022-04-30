@@ -55,7 +55,11 @@ namespace ExamBackEnd
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Exam-API"));
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Exam-API");
+                c.DefaultModelsExpandDepth(-1);
+            });
 
             app.UseRouting();
 

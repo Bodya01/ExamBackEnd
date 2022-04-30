@@ -23,19 +23,16 @@ namespace Exam.Domain.Services.Implementation
         private readonly UserManager<User> userManager;
         private readonly JwtSettings jwtSettings;
         private readonly TokenValidationParameters tokenValidationParameters;
-        private readonly ExamContext context;
 
         public IdentityService( IRepository<RefreshToken> repository,
                                 UserManager<User> userManager,
                                 JwtSettings jwtSettings,
-                                TokenValidationParameters tokenValidationParameters,
-                                ExamContext context)
+                                TokenValidationParameters tokenValidationParameters)
         {
             this.userManager = userManager;
             this.jwtSettings = jwtSettings;
             this.tokenValidationParameters = tokenValidationParameters;
             this.repository = repository;
-            this.context = context;
         }
 
         public async Task<(bool isSuccessful, AuthenticationResultDto authResult)> RegisterAsync(UserRegistrationDto registrationDto)
@@ -63,7 +60,6 @@ namespace Exam.Domain.Services.Implementation
             }
 
             var authResult = await GenerateToken(newUser);
-
             return (true, authResult);
         }
 
@@ -84,7 +80,6 @@ namespace Exam.Domain.Services.Implementation
             }
 
             var authResult = await GenerateToken(user);
-
             return (true, authResult);
         }
 
@@ -93,11 +88,14 @@ namespace Exam.Domain.Services.Implementation
             var validatedToken = GetPrincipalFromToken(refreshTokenDto.Token);
             if (validatedToken is null)
             {
-                return(false, null);
+                return (false, null);
             }
-            var expiryDateUnix = long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+            var expiryDateUnix = 
+                long.Parse(validatedToken.Claims
+                .Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
 
-            var expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            var expiryDateTime = 
+                new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 .AddSeconds(expiryDateUnix)
                 .Subtract(jwtSettings.LifeTime);
             if (expiryDateTime > DateTime.UtcNow)
@@ -108,23 +106,11 @@ namespace Exam.Domain.Services.Implementation
 
             var storedRefreshToken = await repository.GetByIdAsync(refreshTokenDto.RefreshToken);
 
-            if (storedRefreshToken is null)
-            {
-                return (false, null);
-            }
-            if (DateTime.UtcNow > storedRefreshToken.ExpiryDate)
-            {
-                return (false, null);
-            }
-            if (storedRefreshToken.Invalidated)
-            {
-                return (false, null);
-            }
-            if (storedRefreshToken.IsUsed)
-            {
-                return (false, null);
-            }
-            if (storedRefreshToken.JwtId != jti)
+            if (storedRefreshToken is null
+                && DateTime.UtcNow > storedRefreshToken.ExpiryDate
+                && storedRefreshToken.Invalidated
+                && storedRefreshToken.IsUsed
+                && storedRefreshToken.JwtId != jti)
             {
                 return (false, null);
             }
@@ -179,7 +165,6 @@ namespace Exam.Domain.Services.Implementation
                 }),
                 Expires = DateTime.UtcNow.Add(jwtSettings.LifeTime),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

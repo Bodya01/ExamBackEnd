@@ -11,13 +11,14 @@ namespace Exam.WebApi.ServiceExtension
 {
     public class MvcInstaller : IInstaller
     {
+        private readonly JwtSettings jwtSettings = new JwtSettings();
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = new JwtSettings();
+            services.AddMvc();
+
             configuration.Bind(nameof(jwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
-
-            services.AddMvc();
+            services.AddSingleton(GetValidationParameters());
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -29,18 +30,6 @@ namespace Exam.WebApi.ServiceExtension
                 options.KnownProxies.Clear();
             });
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                RequireExpirationTime = false,
-                ValidateLifetime = true,
-            };
-
-            services.AddSingleton(tokenValidationParameters);
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -50,8 +39,21 @@ namespace Exam.WebApi.ServiceExtension
                 .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
-                    options.TokenValidationParameters = tokenValidationParameters;
+                    options.TokenValidationParameters = GetValidationParameters();
                 });
+        }
+
+        private TokenValidationParameters GetValidationParameters()
+        {
+            return new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+            };
         }
     }
 }
