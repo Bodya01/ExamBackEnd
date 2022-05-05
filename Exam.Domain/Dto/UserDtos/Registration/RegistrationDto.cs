@@ -1,6 +1,6 @@
 ﻿namespace Exam.Domain.Dto.UserDtos.Registration
 {
-    public class UserRegistrationDto
+    public class RegistrationDto
     {
         public string Email { get; set; }
         public string Name { get; set; }

@@ -35,7 +35,7 @@ namespace Exam.Domain.Services.Implementation
             this.repository = repository;
         }
 
-        public async Task<(bool isSuccessful, AuthenticationResultDto authResult)> RegisterAsync(UserRegistrationDto registrationDto)
+        public async Task<(bool isSuccessful, AuthenticationResultDto authResult)> RegisterAsync(RegistrationDto registrationDto)
         {
             var exsistingUser = await userManager.FindByEmailAsync(registrationDto.Email);
 
@@ -49,7 +49,7 @@ namespace Exam.Domain.Services.Implementation
                 Email = registrationDto.Email,
                 Name = registrationDto.Name,
                 Surname = registrationDto.Surname,
-                UserName = $"{registrationDto.Name}.{registrationDto.Surname}.{DateTime.Today.Year}"
+                UserName = $"{registrationDto.Name}.{registrationDto.Surname}"
             };
 
             var createdUser = await userManager.CreateAsync(newUser, registrationDto.Password);
@@ -182,8 +182,11 @@ namespace Exam.Domain.Services.Implementation
 
             return new AuthenticationResultDto
             {
+                JwtId = token.Id,
                 JwtToken = tokenHandler.WriteToken(token),
-                RefreshToken = refreshToken.Token
+                JwtExpireTime = tokenDescriptor.Expires,
+                RefreshToken = refreshToken.Token,
+                User = user,
             };
         }
     }
