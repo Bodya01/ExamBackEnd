@@ -11,7 +11,9 @@ namespace Exam.Data.EntityConfiguration
             builder.ToTable("Group");
 
             builder.HasKey(g => g.Id);
-            builder.Property(g => g.Id).ValueGeneratedOnAdd().IsRequired();
+            builder.Property(g => g.Id)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
 
             builder.Property(g => g.Name).IsRequired().HasMaxLength(10);
         }

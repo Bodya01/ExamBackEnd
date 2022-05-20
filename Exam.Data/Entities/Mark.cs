@@ -8,9 +8,9 @@ namespace Exam.Data.Entities
         public double PartialMark { get; set; }
         public double ExamMark { get; set; }
         public double TotalMark { get; set; }
-        public int CourseId { get; set; }
         public string StudentId { get; set; }
-        public Course Course { get; set; }
-        public User Student { get; set; }
+        public int SubjectId { get; set; }
+        public Subject Subject { get; set; }
+        public Student Student { get; set; }
     }
 }

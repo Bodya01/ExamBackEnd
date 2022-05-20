@@ -4,14 +4,16 @@ using Exam.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exam.Data.Migrations
 {
     [DbContext(typeof(ExamContext))]
-    partial class ExamContextModelSnapshot : ModelSnapshot
+    [Migration("20220520152644_FixedRelationShipsMovedColumnsFromUserToStudent")]
+    partial class FixedRelationShipsMovedColumnsFromUserToStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,10 +31,15 @@ namespace Exam.Data.Migrations
                     b.Property<DateTime>("ExamDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
 
                     b.HasIndex("SubjectId");
 
@@ -51,7 +58,12 @@ namespace Exam.Data.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Group");
                 });
@@ -169,9 +181,11 @@ namespace Exam.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Subject");
                 });
@@ -410,21 +424,6 @@ namespace Exam.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SubjectTeacher", b =>
-                {
-                    b.Property<int>("SubjectsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TeachersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("SubjectsId", "TeachersId");
-
-                    b.HasIndex("TeachersId");
-
-                    b.ToTable("SubjectTeacher");
-                });
-
             modelBuilder.Entity("Exam.Data.Entities.Student", b =>
                 {
                     b.HasBaseType("Exam.Data.Entities.User");
@@ -441,7 +440,12 @@ namespace Exam.Data.Migrations
                     b.Property<bool>("IsExpulsed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasIndex("GroupId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Student");
                 });
@@ -458,6 +462,10 @@ namespace Exam.Data.Migrations
 
             modelBuilder.Entity("Exam.Data.Entities.Exam", b =>
                 {
+                    b.HasOne("Exam.Data.Entities.Student", null)
+                        .WithMany("Exams")
+                        .HasForeignKey("StudentId");
+
                     b.HasOne("Exam.Data.Entities.Subject", "Subject")
                         .WithMany("Exams")
                         .HasForeignKey("SubjectId")
@@ -465,6 +473,15 @@ namespace Exam.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Group", b =>
+                {
+                    b.HasOne("Exam.Data.Entities.Teacher", "Teacher")
+                        .WithMany("Groups")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Exam.Data.Entities.Mark", b =>
@@ -500,6 +517,15 @@ namespace Exam.Data.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Subject", b =>
+                {
+                    b.HasOne("Exam.Data.Entities.Teacher", "Teacher")
+                        .WithMany("Subjects")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("GroupSubject", b =>
@@ -583,21 +609,6 @@ namespace Exam.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SubjectTeacher", b =>
-                {
-                    b.HasOne("Exam.Data.Entities.Subject", null)
-                        .WithMany()
-                        .HasForeignKey("SubjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Exam.Data.Entities.Teacher", null)
-                        .WithMany()
-                        .HasForeignKey("TeachersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Exam.Data.Entities.Student", b =>
                 {
                     b.HasOne("Exam.Data.Entities.Group", "Group")
@@ -612,7 +623,13 @@ namespace Exam.Data.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
+                    b.HasOne("Exam.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Group");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Exam.Data.Entities.Teacher", b =>
@@ -645,7 +662,16 @@ namespace Exam.Data.Migrations
 
             modelBuilder.Entity("Exam.Data.Entities.Student", b =>
                 {
+                    b.Navigation("Exams");
+
                     b.Navigation("Marks");
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Teacher", b =>
+                {
+                    b.Navigation("Groups");
+
+                    b.Navigation("Subjects");
                 });
 #pragma warning restore 612, 618
         }

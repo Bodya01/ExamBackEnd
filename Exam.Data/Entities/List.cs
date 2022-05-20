@@ -8,6 +8,6 @@ namespace Exam.Data.Entities
     {
         public int Id { get; set; }
         public ListTypes ListType { get; set; }
-        public ICollection<User> Students { get; set; }
+        public ICollection<Student> Students { get; set; }
     }
 }

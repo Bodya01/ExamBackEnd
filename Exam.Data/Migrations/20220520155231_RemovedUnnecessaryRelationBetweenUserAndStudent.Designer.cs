@@ -4,14 +4,16 @@ using Exam.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exam.Data.Migrations
 {
     [DbContext(typeof(ExamContext))]
-    partial class ExamContextModelSnapshot : ModelSnapshot
+    [Migration("20220520155231_RemovedUnnecessaryRelationBetweenUserAndStudent")]
+    partial class RemovedUnnecessaryRelationBetweenUserAndStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +53,12 @@ namespace Exam.Data.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Group");
                 });
@@ -169,9 +176,11 @@ namespace Exam.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Subject");
                 });
@@ -410,21 +419,6 @@ namespace Exam.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SubjectTeacher", b =>
-                {
-                    b.Property<int>("SubjectsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TeachersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("SubjectsId", "TeachersId");
-
-                    b.HasIndex("TeachersId");
-
-                    b.ToTable("SubjectTeacher");
-                });
-
             modelBuilder.Entity("Exam.Data.Entities.Student", b =>
                 {
                     b.HasBaseType("Exam.Data.Entities.User");
@@ -467,6 +461,15 @@ namespace Exam.Data.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("Exam.Data.Entities.Group", b =>
+                {
+                    b.HasOne("Exam.Data.Entities.Teacher", "Teacher")
+                        .WithMany("Groups")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("Exam.Data.Entities.Mark", b =>
                 {
                     b.HasOne("Exam.Data.Entities.Student", "Student")
@@ -500,6 +503,15 @@ namespace Exam.Data.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Subject", b =>
+                {
+                    b.HasOne("Exam.Data.Entities.Teacher", "Teacher")
+                        .WithMany("Subjects")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("GroupSubject", b =>
@@ -583,21 +595,6 @@ namespace Exam.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SubjectTeacher", b =>
-                {
-                    b.HasOne("Exam.Data.Entities.Subject", null)
-                        .WithMany()
-                        .HasForeignKey("SubjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Exam.Data.Entities.Teacher", null)
-                        .WithMany()
-                        .HasForeignKey("TeachersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Exam.Data.Entities.Student", b =>
                 {
                     b.HasOne("Exam.Data.Entities.Group", "Group")
@@ -646,6 +643,13 @@ namespace Exam.Data.Migrations
             modelBuilder.Entity("Exam.Data.Entities.Student", b =>
                 {
                     b.Navigation("Marks");
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Teacher", b =>
+                {
+                    b.Navigation("Groups");
+
+                    b.Navigation("Subjects");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,10 +22,10 @@ namespace Exam.Data.EntityConfiguration
                 .HasForeignKey(m => m.StudentId)
                 .HasPrincipalKey(u => u.Id);
 
-            builder.HasOne(m => m.Course)
-                .WithMany(c => c.Marks)
-                .HasForeignKey(m => m.CourseId)
-                .HasPrincipalKey(c => c.Id);
+            builder.HasOne(m => m.Subject)
+                .WithMany(s => s.Marks)
+                .HasForeignKey(m => m.SubjectId)
+                .HasPrincipalKey(s => s.Id);
         }
     }
 }

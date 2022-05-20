@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Exam.WebApi.Controllers
 {
+    [Route("api")]
     [ApiController]
     public class IdentityController : ControllerBase
     {
@@ -18,21 +19,21 @@ namespace Exam.WebApi.Controllers
         }
 
 
-        [HttpPost("~/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register(RegistrationDto registrationDto)
         {
             var (isSuccessful, authResult) = await identityService.RegisterAsync(registrationDto);
             return isSuccessful ? Ok(authResult) : BadRequest();
         }
 
-        [HttpPost("~/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var (isSuccessful, authResult) = await identityService.LoginAsync(loginDto);
             return isSuccessful ? Ok(authResult) : BadRequest();
         }
 
-        [HttpPost("~/refresh")]
+        [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken(RefreshTokenDto refreshTokenDto)
         {
             var (isSuccessful, authResult) = await identityService.RefreshAsync(refreshTokenDto);

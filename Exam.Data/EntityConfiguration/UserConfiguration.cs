@@ -8,12 +8,8 @@ namespace Exam.Data.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.Property(u => u.GroupId).IsRequired(false);
-
-            builder.HasOne(u => u.Group)
-                .WithMany(g => g.Students)
-                .HasForeignKey(u => u.GroupId)
-                .HasPrincipalKey(g => g.Id);
+            builder.Property(u => u.Name).HasMaxLength(20);
+            builder.Property(u => u.Surname).HasMaxLength(30);
         }
     }
 }

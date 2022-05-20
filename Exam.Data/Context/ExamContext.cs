@@ -14,7 +14,8 @@ namespace Exam.Data.Context
         public DbSet<Mark> Marks { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Course> Courses { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
 
         public ExamContext(DbContextOptions<ExamContext> options)
             : base(options) { }
@@ -27,7 +28,6 @@ namespace Exam.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new CourseConfiguration());
             modelBuilder.ApplyConfiguration(new ExamConfiguration());
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
             modelBuilder.ApplyConfiguration(new ListConfiguration());
@@ -36,6 +36,8 @@ namespace Exam.Data.Context
             modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
             modelBuilder.ApplyConfiguration(new SubjectConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentConfiguraton());
+            modelBuilder.ApplyConfiguration(new TeacherConfiguration());
         }
     }
 }
