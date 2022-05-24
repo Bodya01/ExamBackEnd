@@ -1,5 +1,4 @@
-﻿using Exam.Data.Context;
-using Exam.Data.Entities;
+﻿using Exam.Data.Entities;
 using Exam.Data.Infrastructure;
 using Exam.Domain.Dto.UserDtos.Login;
 using Exam.Domain.Dto.UserDtos.Refresh;
@@ -24,7 +23,7 @@ namespace Exam.Domain.Services.Implementation
         private readonly JwtSettings jwtSettings;
         private readonly TokenValidationParameters tokenValidationParameters;
 
-        public IdentityService( IRepository<RefreshToken> repository,
+        public IdentityService(IRepository<RefreshToken> repository,
                                 UserManager<User> userManager,
                                 JwtSettings jwtSettings,
                                 TokenValidationParameters tokenValidationParameters)
@@ -35,7 +34,7 @@ namespace Exam.Domain.Services.Implementation
             this.repository = repository;
         }
 
-        public async Task<(bool isSuccessful, AuthenticationResultDto authResult)> RegisterAsync(RegistrationDto registrationDto)
+        public async Task<(bool isSuccessful, AuthenticationResultDto authResult)> RegisterAsync(StudentRegistrationDto registrationDto)
         {
             var exsistingUser = await userManager.FindByEmailAsync(registrationDto.Email);
 
@@ -44,12 +43,43 @@ namespace Exam.Domain.Services.Implementation
                 return (false, null);
             }
 
-            var newUser = new User
+            var newUser = new Student
             {
                 Email = registrationDto.Email,
                 Name = registrationDto.Name,
                 Surname = registrationDto.Surname,
-                UserName = $"{registrationDto.Name}.{registrationDto.Surname}"
+                UserName = $"{registrationDto.Name}.{registrationDto.Surname}",
+                GroupId = registrationDto.GroupId,
+                HasSchoolarship = registrationDto.HasScholarship
+            };
+
+            var createdUser = await userManager.CreateAsync(newUser, registrationDto.Password);
+
+            if (!createdUser.Succeeded)
+            {
+                return (false, null);
+            }
+
+            var authResult = await GenerateToken(newUser);
+            return (true, authResult);
+        }
+
+        public async Task<(bool isSuccessful, AuthenticationResultDto authResult)> RegisterAsync(TeacherRegistrationDto registrationDto)
+        {
+            var exsistingUser = await userManager.FindByEmailAsync(registrationDto.Email);
+
+            if (exsistingUser is not null)
+            {
+                return (false, null);
+            }
+
+            var newUser = new Teacher
+            {
+                Email = registrationDto.Email,
+                Name = registrationDto.Name,
+                Surname = registrationDto.Surname,
+                UserName = $"{registrationDto.Name}.{registrationDto.Surname}",
+                Grade = registrationDto.Grade,
             };
 
             var createdUser = await userManager.CreateAsync(newUser, registrationDto.Password);
@@ -90,11 +120,11 @@ namespace Exam.Domain.Services.Implementation
             {
                 return (false, null);
             }
-            var expiryDateUnix = 
+            var expiryDateUnix =
                 long.Parse(validatedToken.Claims
                 .Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
 
-            var expiryDateTime = 
+            var expiryDateTime =
                 new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 .AddSeconds(expiryDateUnix)
                 .Subtract(jwtSettings.LifeTime);

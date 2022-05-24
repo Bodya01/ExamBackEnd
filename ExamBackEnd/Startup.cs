@@ -1,10 +1,12 @@
 using Exam.WebApi.ServiceExtension;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace ExamBackEnd
 {
@@ -37,7 +39,11 @@ namespace ExamBackEnd
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IServiceProvider serviceProvider,
+            IRecurringJobManager reccuringJobManager)
         {
             if (env.IsDevelopment())
             {
@@ -73,6 +79,8 @@ namespace ExamBackEnd
             {
                 endpoints.MapControllers();
             });
+
+            serviceProvider.AddReccuringJobs(reccuringJobManager);
         }
     }
 }

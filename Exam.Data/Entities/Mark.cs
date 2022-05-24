@@ -8,6 +8,7 @@ namespace Exam.Data.Entities
         public double PartialMark { get; set; }
         public double ExamMark { get; set; }
         public double TotalMark { get; set; }
+        public bool IsConfirmed { get; set; }
         public string StudentId { get; set; }
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }

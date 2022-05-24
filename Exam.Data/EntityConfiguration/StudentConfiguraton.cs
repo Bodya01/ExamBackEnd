@@ -10,6 +10,9 @@ namespace Exam.Data.EntityConfiguration
         {
             builder.ToTable("Student");
 
+            builder.Property(s => s.GroupId).IsRequired();
+            builder.Property(s => s.BankAccout).IsRequired(false);
+
             builder.HasOne(u => u.Group)
                 .WithMany(g => g.Students)
                 .HasForeignKey(u => u.GroupId)

@@ -19,8 +19,14 @@ namespace Exam.WebApi.Controllers
         }
 
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegistrationDto registrationDto)
+        [HttpPost("register-student")]
+        public async Task<IActionResult> RegisterStudent(StudentRegistrationDto registrationDto)
+        {
+            var (isSuccessful, authResult) = await identityService.RegisterAsync(registrationDto);
+            return isSuccessful ? Ok(authResult) : BadRequest();
+        }
+        [HttpPost("register-teacher")]
+        public async Task<IActionResult> RegisterTeacher(TeacherRegistrationDto registrationDto)
         {
             var (isSuccessful, authResult) = await identityService.RegisterAsync(registrationDto);
             return isSuccessful ? Ok(authResult) : BadRequest();

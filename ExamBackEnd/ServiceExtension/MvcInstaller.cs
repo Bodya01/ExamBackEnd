@@ -1,4 +1,5 @@
 ﻿using Exam.Domain.Options;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -14,6 +15,8 @@ namespace Exam.WebApi.ServiceExtension
         private readonly JwtSettings jwtSettings = new JwtSettings();
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHangfireServer();
+
             services.AddMvc();
 
             configuration.Bind(nameof(jwtSettings), jwtSettings);
@@ -52,7 +55,7 @@ namespace Exam.WebApi.ServiceExtension
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 RequireExpirationTime = false,
-                ValidateLifetime = true,
+                ValidateLifetime = false,
             };
         }
     }
