@@ -10,6 +10,7 @@ namespace Exam.Data.Entities
         public NotificationTypes Type { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsRead { get; set; } = false;
+        public string JsonData { get; set; }
         public string RecieverId { get; set; }
         public User? User { get; set; }
     }

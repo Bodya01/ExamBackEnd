@@ -22,5 +22,13 @@ namespace Exam.WebApi.Controllers
         [HttpGet("by-group/{id}")]
         public async Task<IActionResult> GetExamsByGroup(int id) =>
             Ok(await examService.GetByGroupAsync(id));
+
+        [HttpGet("by-teacher/{id}")]
+        public async Task<IActionResult> GetExamsByTeacher(string id) =>
+            Ok(await examService.GetByTeacherAsync(id));
+
+        [HttpGet("by-student/{id}")]
+        public async Task<IActionResult> GetExamsByStudent(string id) =>
+            Ok(await examService.GetByStudentAsync(id));
     }
 }

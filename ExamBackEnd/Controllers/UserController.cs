@@ -1,4 +1,5 @@
-﻿using Exam.Domain.Services.Interfaces;
+﻿using Exam.Domain.Dto.UserDtos;
+using Exam.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -16,6 +17,13 @@ namespace Exam.WebApi.Controllers
             )
         {
             this.studentService = studentService;
+        }
+
+        [HttpPut("change-bank-account")]
+        public async Task<IActionResult> ChangeStudentBankAccout(ChangeAccountDto changeAccount)
+        {
+            var (isSuccessful, updatedStudent) = await studentService.ChageAccountAsync(changeAccount);
+            return isSuccessful ? Ok(updatedStudent) : Forbid();
         }
 
         [HttpGet("students/{id}")]
@@ -36,5 +44,12 @@ namespace Exam.WebApi.Controllers
         [HttpGet("students/get-expulsed")]
         public async Task<IActionResult> GetExpulsedStudents() =>
             Ok(await studentService.GetExpulsedStudentsAsync());
+
+        [HttpPost("students/add-subject")]
+        public async Task<IActionResult> AddSubject(AddSubjectDto addSubject)
+        {
+            var (isSuccessful, mark) = await studentService.AddSubjectAsync(addSubject);
+            return isSuccessful ? Ok(mark) : Forbid();
+        }
     }
 }

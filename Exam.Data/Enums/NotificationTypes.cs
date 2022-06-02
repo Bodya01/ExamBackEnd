@@ -2,7 +2,7 @@
 {
     public enum NotificationTypes
     {
-        SchoolarshipReceiving,
+        SchoolarshipReceiving = 1,
         ExamReminder
     }
 }

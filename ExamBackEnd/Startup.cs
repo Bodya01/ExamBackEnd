@@ -1,7 +1,9 @@
+using Exam.Domain.Hubs;
 using Exam.WebApi.ServiceExtension;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -78,7 +80,13 @@ namespace ExamBackEnd
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<SignalRHub>("/signalr", options =>
+                {
+                    options.Transports = HttpTransportType.WebSockets;
+                });
             });
+
+            app.UseHangfireDashboard("/dashboard");
 
             serviceProvider.AddReccuringJobs(reccuringJobManager);
         }

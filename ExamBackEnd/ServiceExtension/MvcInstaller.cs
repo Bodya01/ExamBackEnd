@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Text;
 
 namespace Exam.WebApi.ServiceExtension
@@ -15,6 +16,8 @@ namespace Exam.WebApi.ServiceExtension
         private readonly JwtSettings jwtSettings = new JwtSettings();
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSignalR()
+                .AddNewtonsoftJsonProtocol( options => options.PayloadSerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddHangfireServer();
 
             services.AddMvc();

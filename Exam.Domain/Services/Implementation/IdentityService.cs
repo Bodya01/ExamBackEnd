@@ -18,12 +18,12 @@ namespace Exam.Domain.Services.Implementation
 {
     public class IdentityService : IIdentityService
     {
-        private readonly IRepository<RefreshToken> repository;
+        private readonly IRepository<RefreshToken> refreshRepository;
         private readonly UserManager<User> userManager;
         private readonly JwtSettings jwtSettings;
         private readonly TokenValidationParameters tokenValidationParameters;
 
-        public IdentityService(IRepository<RefreshToken> repository,
+        public IdentityService(IRepository<RefreshToken> refreshRepository,
                                 UserManager<User> userManager,
                                 JwtSettings jwtSettings,
                                 TokenValidationParameters tokenValidationParameters)
@@ -31,7 +31,7 @@ namespace Exam.Domain.Services.Implementation
             this.userManager = userManager;
             this.jwtSettings = jwtSettings;
             this.tokenValidationParameters = tokenValidationParameters;
-            this.repository = repository;
+            this.refreshRepository = refreshRepository;
         }
 
         public async Task<(bool isSuccessful, AuthenticationResultDto authResult)> RegisterAsync(StudentRegistrationDto registrationDto)
@@ -134,7 +134,7 @@ namespace Exam.Domain.Services.Implementation
             }
             var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            var storedRefreshToken = await repository.GetByIdAsync(refreshTokenDto.RefreshToken);
+            var storedRefreshToken = await refreshRepository.GetByIdAsync(refreshTokenDto.RefreshToken);
 
             if (storedRefreshToken is null
                 && DateTime.UtcNow > storedRefreshToken.ExpiryDate
@@ -146,8 +146,8 @@ namespace Exam.Domain.Services.Implementation
             }
 
             storedRefreshToken.IsUsed = true;
-            await repository.UpdateAsync(storedRefreshToken);
-            await repository.SaveChangesAsync();
+            await refreshRepository.UpdateAsync(storedRefreshToken);
+            await refreshRepository.SaveChangesAsync();
 
             var user = await userManager.FindByIdAsync(validatedToken.Claims.Single(c => c.Type == "Id").Value);
 
@@ -207,8 +207,8 @@ namespace Exam.Domain.Services.Implementation
                 ExpiryDate = DateTime.UtcNow.AddMonths(6)
             };
 
-            await repository.AddAsync(refreshToken);
-            await repository.SaveChangesAsync();
+            await refreshRepository.AddAsync(refreshToken);
+            await refreshRepository.SaveChangesAsync();
 
             return new AuthenticationResultDto
             {

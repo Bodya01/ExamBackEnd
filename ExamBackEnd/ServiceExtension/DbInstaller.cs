@@ -30,6 +30,7 @@ namespace Exam.WebApi.ServiceExtension
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped<IMarkService, MarkService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddScoped<IRepository<Student>, Repository<Student>>();
             services.AddScoped<IRepository<Teacher>, Repository<Teacher>>();
@@ -39,6 +40,7 @@ namespace Exam.WebApi.ServiceExtension
             services.AddScoped<IRepository<List>, Repository<List>>();
             services.AddScoped<IRepository<Subject>, Repository<Subject>>();
             services.AddScoped<IRepository<Mark>, Repository<Mark>>();
+            services.AddScoped<IRepository<Notification>, Repository<Notification>>();
         }
     }
 }
