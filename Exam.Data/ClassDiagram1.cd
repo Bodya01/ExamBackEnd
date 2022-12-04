@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Exam.Data.Entities.Exam">
+    <Position X="10.25" Y="5" Width="1.25" />
+    <Members>
+      <Property Name="SubjectId" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAACAAAAEAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Exam.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Exam.Data.Entities.Group">
+    <Position X="12.75" Y="5.5" Width="1.5" />
+    <AssociationLine Name="Subjects" Type="Exam.Data.Entities.Subject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.625" Y="5.5" />
+        <Point X="13.625" Y="4.57" />
+        <Point X="12.5" Y="4.57" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Students" Type="Exam.Data.Entities.Student" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.344" Y="6.796" />
+        <Point X="13.344" Y="7.484" />
+        <Point X="9.75" Y="7.484" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAICAEAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Group.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Subjects" />
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Exam.Data.Entities.List">
+    <Position X="7.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\List.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ListType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Exam.Data.Entities.Mark">
+    <Position X="8.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAcABAAAAAAIAAAAAAAAAAAAAAAAQAAAACAAA=</HashCode>
+      <FileName>Entities\Mark.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Exam.Data.Entities.Notification">
+    <Position X="15.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAAACAAEAAAAAAAAAAAAQAEAAAAAAA=</HashCode>
+      <FileName>Entities\Notification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="Exam.Data.Entities.RefreshToken">
+    <Position X="13.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAVAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAQAAAABAAA=</HashCode>
+      <FileName>Entities\RefreshToken.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Exam.Data.Entities.Subject">
+    <Position X="11.25" Y="3" Width="1.25" />
+    <AssociationLine Name="Exams" Type="Exam.Data.Entities.Exam" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.312" Y="4.68" />
+        <Point X="12.312" Y="5.744" />
+        <Point X="11.5" Y="5.744" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.123" Y="-0.27" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Groups" Type="Exam.Data.Entities.Group" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.5" Y="3.953" />
+        <Point X="14" Y="3.953" />
+        <Point X="14" Y="5.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.702" Y="0.224" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAAAAAAACAQAAAAAAAAAAAQAAgAgAAA=</HashCode>
+      <FileName>Entities\Subject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Exams" />
+      <Property Name="Groups" />
+      <Property Name="Marks" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Exam.Data.Entities.User">
+    <Position X="10.75" Y="8" Width="1.5" />
+    <AssociationLine Name="RefreshTokens" Type="Exam.Data.Entities.RefreshToken" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.062" Y="9.425" />
+        <Point X="11.062" Y="10.562" />
+        <Point X="13.25" Y="10.562" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.133" Y="-0.324" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Notifications" Type="Exam.Data.Entities.Notification" FixedFromPoint="true">
+      <Path>
+        <Point X="12.25" Y="8.56" />
+        <Point X="13.75" Y="8.56" />
+        <Point X="13.75" Y="8.733" />
+        <Point X="15.25" Y="8.733" />
+        <Point X="15.25" Y="8.5" />
+        <Point X="16.25" Y="8.5" />
+        <Point X="16.25" Y="8.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIgAAAAAAAAAAQABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="RefreshTokens" />
+      <Property Name="Notifications" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Exam.Data.Entities.Teacher">
+    <Position X="14" Y="7.25" Width="1.5" />
+    <InheritanceLine Type="Exam.Data.Entities.User" FixedToPoint="true">
+      <Path>
+        <Point X="12.25" Y="8.223" />
+        <Point X="14" Y="8.223" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Entities\Teacher.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Subjects" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Exam.Data.Entities.Student">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <InheritanceLine Type="Exam.Data.Entities.User" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="8.314" />
+        <Point X="9.75" Y="8.314" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="Lists" Type="Exam.Data.Entities.List" FixedToPoint="true">
+      <Path>
+        <Point X="8.938" Y="9.002" />
+        <Point X="8.938" Y="9.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.651" Y="0.074" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAEAAAAAAAIAAAAAAAAAAAAAQAAAAYAAAAACAA=</HashCode>
+      <FileName>Entities\Student.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Lists" />
+      <Property Name="Marks" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Interface Name="Exam.Data.Entities.Interfaces.IEntity" Collapsed="true">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Interfaces\IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Exam.Data.Enums.ListTypes">
+    <Position X="9.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAIAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Enums\ListTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
