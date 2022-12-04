@@ -9,5 +9,11 @@ namespace Exam.Tests
         {
             Assert.True(true);
         }
+
+        [Fact]
+        public void FailingProxyTest()
+        {
+            Assert.True(false);
+        }
     }
 }
