@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exam.Domain", "Exam.Domain\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exam.Data", "Exam.Data\Exam.Data.csproj", "{43909F9B-13F5-4FA9-A5BE-25813D5B2E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam.UnitTests", "Exam.UnitTests\Exam.UnitTests.csproj", "{39F7937F-B84D-469A-A220-0AA20490AB16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam.Tests", "Exam.Tests\Exam.Tests.csproj", "{F9D613CC-1A95-4E9C-B6D1-9FBB0A33A8AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{43909F9B-13F5-4FA9-A5BE-25813D5B2E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43909F9B-13F5-4FA9-A5BE-25813D5B2E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43909F9B-13F5-4FA9-A5BE-25813D5B2E17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39F7937F-B84D-469A-A220-0AA20490AB16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39F7937F-B84D-469A-A220-0AA20490AB16}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39F7937F-B84D-469A-A220-0AA20490AB16}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39F7937F-B84D-469A-A220-0AA20490AB16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D613CC-1A95-4E9C-B6D1-9FBB0A33A8AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D613CC-1A95-4E9C-B6D1-9FBB0A33A8AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D613CC-1A95-4E9C-B6D1-9FBB0A33A8AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D613CC-1A95-4E9C-B6D1-9FBB0A33A8AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
