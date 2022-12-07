@@ -13,7 +13,7 @@ namespace Exam.Tests
         [Fact]
         public void FailingProxyTest()
         {
-            Assert.True(true);
+            Assert.True(false);
         }
     }
 }
